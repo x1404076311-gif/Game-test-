@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#142023">
+<title>周一，请活下来 · 职场文字冒险</title>
+<style>
+:root{
+  --bg:#142023;--panel:#1c2b2e;--ink:#e9e9df;--muted:#9dacaa;
+  --accent:#e6b46e;--paper:#f4efe3;--text:#293332;--line:#cfc8b8;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif}
+button{font:inherit;cursor:pointer}
+button:disabled{cursor:not-allowed;opacity:.48}
+button:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
+header{max-width:1180px;margin:auto;padding:28px 28px 18px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{font-size:13px;letter-spacing:3px;color:var(--muted)}
+.brand b{color:var(--accent)}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+.small{border:1px solid #4b5c5c;border-radius:6px;background:transparent;color:var(--ink);padding:8px 12px;font-size:13px}
+.small:hover{background:#2a3a3d}
+main{max-width:1180px;margin:auto;padding:16px 28px 48px}
+.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin:12px 0 30px}
+h1{font-family:"Songti SC","Noto Serif SC",SimSun,serif;font-size:clamp(38px,6vw,66px);line-height:1.16;margin:8px 0 12px;font-weight:700}
+.hero p{color:var(--muted);margin:0;line-height:1.8;font-size:14px}
+.tag{font-size:11px;letter-spacing:3px;color:var(--accent)}
+.badge{padding:20px;border:1px solid #425254;transform:rotate(3deg);width:190px;flex-shrink:0}
+.badge small{color:var(--muted);letter-spacing:2px}
+.badge strong{display:block;margin:12px 0;font-size:22px}
+.badge span{font-size:12px;color:var(--accent)}
+.layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:22px;align-items:start}
+aside{background:var(--panel);padding:23px;border:1px solid #354647;border-radius:10px;position:sticky;top:20px}
+.eyebrow{font-size:11px;letter-spacing:2px;color:var(--muted);margin-bottom:12px}
+.day{font-size:25px;color:var(--accent);margin-bottom:7px}
+.objective{font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:22px}
+.stat{margin:16px 0;font-size:12px}
+.stat-label{display:flex;justify-content:space-between;margin-bottom:8px}
+.bar{height:5px;background:#3a494b;border-radius:10px;overflow:hidden}
+.bar span{display:block;height:100%;background:var(--accent);transition:width .3s}
+.stat.work .bar span{background:#83b5aa}
+.timeline{display:flex;justify-content:space-between;margin:26px 0 20px}
+.dot{height:30px;width:30px;display:grid;place-items:center;border:1px solid #53605e;border-radius:50%;font-size:12px;color:var(--muted)}
+.dot.done{background:#38504b;color:#c4d7ce;border-color:#38504b}
+.dot.active{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.side-note{font-size:12px;line-height:1.8;color:var(--muted);border-top:1px solid #405052;padding-top:18px}
+.side-note b{color:var(--ink);font-weight:500}
+.paper{background:var(--paper);color:var(--text);border-radius:10px;overflow:hidden;box-shadow:0 15px 45px #0003}
+.paper-top{padding:17px 30px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:15px;font-size:11px;letter-spacing:1px;color:#68746d}
+.live
+#stage{padding:32px 36px 36px;min-height:540px}
+.chapter{color:#857451;font-size:12px;letter-spacing:2px;margin:0 0 14px}
+h2{font-family:"Songti SC",SimSun,serif;font-size:28px;line-height:1.4;margin:0 0 23px}
+.prose{font-size:16px;line-height:2}
+.prose p{margin:0 0 17px;white-space:pre-wrap}
+.prose .quote{border-left:3px solid #bd995a;padding:10px 15px;background:#e9e2d3;font-size:15px}
+.choices{display:grid;gap:11px;margin-top:28px}
+.choice{width:100%;text-align:left;background:#fff8;border:1px solid #cec5b4;border-radius:7px;padding:15px 16px;display:flex;align-items:flex-start;gap:13px;color:var(--text);transition:background .15s,transform .15s}
+.choice:hover:not(:disabled){background:#e8ddc7;transform:translateX(3px);border-color:#b0925d}
+.choice .key{display:grid;place-items:center;flex-shrink:0;width:26px;height:26px;border:1px solid #bdb19a;border-radius:4px;font-size:12px;margin-top:1px}
+.choice strong{display:block;font-size:15px;font-weight:600;line-height:1.6}
+.choice small{display:block;margin-top:5px;line-height:1.7;color:#786d59;font-size:12px}
+.primary{background:#203b36!important;color:#fff!important;border-color:#203b36!important}
+.primary small{color:#c9d6ca!important}
+.primary .key{border-color:#829a8c}
+.note{font-size:12px;color:#7b745f;line-height:1.8;margin-top:22px}
+.evidence-alert{font-size:13px;padding:13px 15px;background:#e3e9de;border:1px solid #bbc8b4;border-radius:6px;line-height:1.8;margin-top:15px}
+.requirement{background:#e9e2d2;border-radius:7px;padding:15px 18px;font-size:13px;line-height:2;margin:18px 0}
+.end-label{display:inline-block;border:1px solid #ad945d;padding:5px 9px;font-size:11px;letter-spacing:2px;color:#7b673e;margin-bottom:18px}
+footer{max-width:1180px;margin:auto;padding:0 28px 30px;color:#879593;font-size:11px;display:flex;justify-content:space-between;gap:15px}
+dialog{border:1px solid #536060;border-radius:12px;background:var(--paper);color:var(--text);width:min(760px,calc(100% - 26px));padding:0;max-height:85vh}
+dialog
+.modal-head{padding:20px 24px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.modal-head h3{margin:0;font-size:19px}
+.close{background:transparent;border:1px solid #b4ad9d;padding:7px 12px;border-radius:5px;color:var(--text)}
+.tabs{display:flex;gap:6px;padding:14px 24px 0;flex-wrap:wrap}
+.tabs button{padding:8px 13px;border-radius:5px;border:1px solid #c7beac;background:transparent;color:#625c4f;font-size:13px}
+.tabs button.on{background:#203b36;color:white;border-color:#203b36}
+#notebook-content{padding:20px 24px 28px;line-height:1.85;font-size:14px}
+.entry{border-bottom:1px solid #d5cdbc;padding:13px 0}
+.entry:first-child{padding-top:0}
+.entry:last-child{border-bottom:0}
+.entry strong{display:block;margin-bottom:5px}
+.entry small{display:block;color:#82775f}
+.entry p{margin:6px 0;white-space:pre-wrap}
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#e6b46e;color:#192524;padding:12px 20px;border-radius:7px;box-shadow:0 5px 25px #0005;font-size:13px;z-index:10;max-width:90%;display:none}
+@media(max-width:760px){
+ header{padding:20px 18px 8px;align-items:flex-start;flex-direction:column}
+ main{padding:10px 18px 30px}
+ .hero{margin:14px 0 24px}.badge{display:none}
+ .layout{grid-template-columns:1fr;gap:15px}
+ aside{position:static;padding:18px;display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
+ aside .eyebrow,aside .objective,aside .timeline,aside .side-note{grid-column:1/-1}
+ aside .objective{margin-bottom:2px}
+ aside .day{grid-column:1/-1}
+ .stat{margin:10px 0}
+ .timeline{margin:16px 0}
+ .paper-top{padding:14px 20px}
+ #stage{padding:25px 21px;min-height:400px}
+ h2{font-size:25px}.prose{font-size:15px}
+ footer{padding:0 18px 25px;flex-direction:column;gap:7px}
+}
+@media(prefers-reduced-motion:reduce){
+ *{transition:none!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><b>HENGCHUAN</b> / 入职档案 047</div>
+  <nav class="tools" aria-label="游戏工具">
+    <button class="small" id="open-notebook">证据笔记</button>
+    <button class="small" id="export-save">导出存档</button>
+    <button class="small" id="import-save">导入存档</button>
+    <button class="small" id="restart">重新开始</button>
+  </nav>
+</header>
+<main>
+  <section class="hero" aria-label="游戏标题">
+    <div>
+      <span class="tag">职场悬疑 · 五个工作日</span>
+      <h1>周一，<br>请活下来。</h1>
+      <p>有些公司的入职流程，最后一步是学会签字。</p>
+    </div>
+    <div class="badge" aria-hidden="true">
+      <small>衡川科技 · 临时工牌</small>
+      <strong>项目运营</strong>
+      <span>状态：试用期 / 待确认</span>
+    </div>
+  </section>
+  <div class="layout">
+    <aside aria-label="角色状态">
+      <div class="eyebrow">本周工作记录</div>
+      <div class="day" id="day-label"></div>
+      <div class="objective" id="objective"></div>
+      <div class="stat">
+        <div class="stat-label"><span>精力</span><span id="energy-value"></span></div>
+        <div class="bar"><span id="energy-bar"></span></div>
+      </div>
+      <div class="stat work">
+        <div class="stat-label"><span>工作表现</span><span id="work-value"></span></div>
+        <div class="bar"><span id="work-bar"></span></div>
+      </div>
+      <div class="timeline" id="timeline" aria-label="五天进度"></div>
+      <div class="side-note" id="side-note"></div>
+    </aside>
+    <section class="paper" aria-label="故事与选择">
+      <div class="paper-top">
+        <span id="scene-label">内部交接文件</span>
+        <span class="live" id="save-label">本地存档</span>
+      </div>
+      <div id="stage" aria-live="polite" aria-atomic="true"></div>
+    </section>
+  </div>
+</main>
+<footer>
+  <span>你的选择会被记住。笔记中的推测，需要证据支持。</span>
+  <span>建议戴上耳机，然后忘掉这条建议：这里没有会议录音。</span>
+</footer>
+<dialog id="notebook" aria-labelledby="notebook-title">
+  <div class="modal-head">
+    <h3 id="notebook-title">我的工作笔记</h3>
+    <button class="close" id="close-notebook">关闭</button>
+  </div>
+  <div class="tabs">
+    <button data-tab="evidence">证据</button>
+    <button data-tab="people">人物</button>
+    <button data-tab="history">行动记录</button>
+    <button data-tab="rules">玩法</button>
+  </div>
+  <div id="notebook-content"></div>
+</dialog>
+<dialog id="confirm-dialog" aria-labelledby="confirm-title">
+  <div class="modal-head">
+    <h3 id="confirm-title">重新开始？</h3>
+    <button class="close" id="cancel-restart">取消</button>
+  </div>
+  <div style="padding:24px">
+    <p>当前进度会被替换。想保留这条路线，可以先导出存档。</p>
+    <button class="close" id="confirm-restart">开始新的一周</button>
+  </div>
+</dialog>
+<input type="file" id="file-input" accept=".json,application/json" hidden>
+<div id="toast" role="status"></div>
+
+<script>
+'use strict';
+
+const SAVE_KEY = 'monday-survive-v1';
+const DAYS = ['周一','周二','周三','周四','周五'];
+
+const EVIDENCE = {
+  note:{
+    title:'前任笔记 · 第七条',
+    type:'提醒，尚不能证明责任',
+    text:'“不签没有附件的确认单。报表的问题不在数字，而在分母。最后，别只听我的。”'
+  },
+  lead:{
+    title:'林晓的口头提醒',
+    type:'待核实线索',
+    text:'林晓说报表没有计入重新打开的工单。她尚未提供原始记录。'
+  },
+  reply:{
+    title:'周岚的书面口径回复',
+    type:'工作记录',
+    text:'周岚要求使用交接版本，并承诺历史口径由她解释。它能明确当前指令，不能证明过去的审批。'
+  },
+  raw:{
+    title:'客户原始工单',
+    type:'已核实 · 问题存在',
+    text:'编号 LT-2047 的工单被系统关闭后再次打开，验收样本中没有这条记录。客户确认故障仍可复现。'
+  },
+  logs:{
+    title:'工程复现日志',
+    type:'已核实 · 问题存在',
+    text:'陈默在测试环境复现了重复关闭。日志与客户问题一致，排除了单纯操作失误。'
+  },
+  change:{
+    title:'数据修改记录',
+    type:'已核实 · 人为修改',
+    text:'统计查询增加了“排除重开工单”的过滤条件，修改人是林晓，修改时间早于本次交接。'
+  },
+  snapshot:{
+    title:'旧版报表与口径差异',
+    type:'已核实 · 人为修改',
+    text:'相同时间范围的留存报表保留了异常工单。新版本更换了统计条件，却沿用了“最终版”名称。'
+  },
+  approval:{
+    title:'临时口径审批邮件',
+    type:'已核实 · 批准记录',
+    text:'周岚批准临时排除异常，并注明“待修复后回填”。抄送名单中有贺维。'
+  },
+  minutes:{
+    title:'负责人书面确认',
+    type:'已核实 · 批准记录',
+    text:'贺维确认自己收到过临时口径说明，并要求继续按原日期推进验收。'
+  },
+  fix:{
+    title:'未完成修复记录',
+    type:'已核实 · 风险未解除',
+    text:'相关修复任务仍处于“待验证”，没有关闭标记。当前验收数据仍未回填。'
+  },
+  confession:{
+    title:'许知远的补充说明',
+    type:'人物证词，需与记录对照',
+    text:'许知远承认自己最初参与了临时方案，后来拒绝签署没有历史说明的确认单。他并非从未参与。'
+  }
+};
+
+const A=(id,label,hint,cost,text,effect={},ev=[],repeat=false,need=null)=>
+  ({id,label,hint,cost,text,effect,ev,repeat,need});
+
+const chapters = [
+{
+  title:'交接', goal:'准备客户汇报，弄清交接材料是否可信。',
+  intro:'09:07。你刚把电脑接上电源，三条消息同时跳出来。\n\n周岚：“十点客户会，你代表团队讲运营数据。用共享盘的最终版，五分钟就好。”\n\n林晓：“先别直接用那份表。有空来茶水间。”\n\n许知远：“我落了东西在抽屉里。你先看看，别急着扔。”\n\n抽屉没有锁。一本薄笔记的封面上写着：第七条最重要。\n\n你来得及先做一件事，再赶去会议室。',
+  later:'客户会结束了。你终于有时间整理这张还不属于你的工位。\n\n共享盘里的“最终版”一共有四个。办公室很安静，只有打印机在替所有人叹气。',
+  actions:[
+    A('book','打开抽屉里的笔记','了解前任留下的提醒。',5,
+      '你翻到第七条。\n\n“不要签没有附件的确认单。”\n\n下面还有一行：“报表的问题不在数字，而在分母。”\n\n最后一页写着：“别只听我的。”\n\n你将笔记收好。前任的提醒值得查，但提醒还不是证据。',{},['note']),
+    A('lin1','去茶水间找林晓','先核实她为什么不让你使用报表。',5,
+      '林晓端着一个空杯子。\n\n“表里写的解决率是百分之九十八。但有一批工单没算进去。”\n\n“为什么？”\n\n“因为它们重新打开过。”她看了一眼门口，“客户今天问的，是问题有没有解决。”\n\n你答应先核实，不把这段谈话转发到群里。',{lin:15},['lead']),
+    A('prep1','下载报表，准备汇报','整理五分钟讲稿，改善工作表现。',10,
+      '你整理出三个图表，删掉了十五页没人会读的背景介绍。\n\n讲稿没有解决你的疑问，但至少你知道每个数字在什么位置。\n\n周岚经过工位：“不错，先把客户的问题接住。”',{work:12,zhou:5}),
+    A('ask1','请周岚书面确认口径','获得当前指令，也让领导注意到你的谨慎。',0,
+      '你发消息：“历史统计口径是否沿用交接版本？客户如问及，我想确认解释方式。”\n\n周岚回复：“先沿用。历史口径我解释，你负责记录待补事项。”\n\n你保存了这条消息。过了一会儿，她又问：“谁提醒你查口径的？”',{zhou:5,heat:5},['reply']),
+    A('verify1','对照共享盘里的旧版本','核实新旧报表的统计差异。',10,
+      '你打开一个上周留存的版本。\n\n两个文件的时间范围相同，分母却不一样。旧版本保留了重新打开的工单，新版本的口径说明多了一条排除条件。\n\n文件仍然叫“最终版”。你记录下文件版本与时间戳。',{work:5},['snapshot'])
+  ]
+},
+{
+  title:'异常',goal:'回应客户投诉，判断报表是否掩盖了实际问题。',
+  intro:'周二，09:15。\n\n客户又发来一张截图：“这条工单已经是第三次自动关闭了。”\n\n贺维在群里回复：“收到，运营会解释。”\n\n他没有问你是否知道怎么解释。',
+  actions:[
+    A('raw2','联系客户，核对原始工单','取得原始记录，回应具体问题。',10,
+      '客户给了你工单编号 LT-2047，并演示了故障。\n\n系统把它标记为已解决，几分钟后，它又出现在待处理列表。验收样本中却没有它。\n\n你确认这不是客户记错，并承诺只反馈核实后的事实。',{work:10,lin:5},['raw']),
+    A('change2','与林晓核对修改记录','确认过滤条件由谁、何时修改。',10,
+      '你没有质问她，而是把两个统计条件摆在一起。\n\n林晓打开修改记录：“是我加的。但当时说的是临时处理，修好以后回填。”\n\n记录显示修改发生在你入职之前。她让你保存正式记录，而非私人聊天截图。',{lin:15,heat:5},['change']),
+    A('chen2','找陈默复现系统问题','取得工程日志，建立与工程师的关系。',10,
+      '陈默最初说：“你又不是来修代码的。”\n\n你把客户编号和复现步骤放在他面前。\n\n十分钟后，他关掉了玩笑：“这个问题我报过。你要的不是我的抱怨，是日志，对吧？”\n\n他导出测试记录。',{chen:20},['logs']),
+    A('deliver2','整理客户回应与处理时间表','先把眼前工作做好。',15,
+      '你把“正在跟进”改成了三件具体的事：复现、定位、反馈时间。\n\n客户回复：“至少这次知道你们在做什么。”\n\n周岚给你的文档点了一个赞。你知道那个赞不代表所有问题都解决了。',{work:15,zhou:10}),
+    A('rest2','午休，离开工作群二十分钟','恢复 25 点精力，可重复。',0,
+      '你把手机翻过来，去楼下吃了一碗热面。\n\n回来的时候，工作群多了四十七条消息。至少其中没有一条需要你饿着肚子读。',{energy:25},[],true)
+  ]
+},
+{
+  title:'责任',goal:'检查验收材料，明确历史问题的责任边界。',
+  intro:'周三，09:00。\n\n验收纪要已经替你写好了。\n\n其中一行是：“现任项目运营已确认历史统计口径及数据完整性。”\n\n你的名字出现在下面。留给你的空白，只有签字位置。',
+  actions:[
+    A('approve3','查阅项目审批邮件','阅览已有权限的邮件；戒心过高时权限会收紧。',10,
+      '你在归档邮件中找到“临时口径处理”。\n\n周岚批准排除异常，备注是“待修复后回填”。贺维在抄送名单里。\n\n批准发生在前任任职期间。邮件没有说可以永久删除异常。',{heat:10},['approval'],false,
+      s=>s.heat<35),
+    A('lin3','向林晓确认“临时处理”的来历','兑现不外传私聊的承诺。',5,
+      '林晓看了一眼纪要。\n\n“你没有把我那天的话贴到群里。”\n\n她重新打开数据修改记录，解释当时的需求：“这是临时方案，不是交付标准。”\n\n她愿意让正式记录接受核对。',{lin:15},['change']),
+    A('archive3','核对归档的旧版报表','通过版本留存补齐改表证据。',10,
+      '归档目录里有一份月初报表，文件时间和项目纪要能够对上。\n\n异常工单当时都在。现在它们被排除，口径说明却没有同步给客户。\n\n你把两个版本的编号记在笔记里。',{},['snapshot']),
+    A('chen3','检查修复任务状态','确认故障是否已修好。',10,
+      '陈默打开任务板。相关任务仍是“待验证”。\n\n“待验证不是已完成。”他说。\n\n没有关闭标记，也没有验收数据回填记录。他同意你在材料中引用这项正式状态。',{chen:15},['fix']),
+    A('work3','整理真实的验收材料','列清已完成、待确认与待修复事项。',15,
+      '你给材料增加了三列：已核实、待补证、待修复。\n\n这比一份全是绿色的进度表难看，但客户能够据此做决定。\n\n周岚看了很久：“这个版本，至少讲得清楚。”',{work:15,zhou:10})
+  ]
+},
+{
+  title:'交换',goal:'选择如何使用证据，准备周五的正式决定。',
+  intro:'周四，08:50。\n\n许知远终于回复了你的问题：“有些事，笔记里没有写全。”\n\n另一边，贺维请你下午去他的办公室。“你适应得很快。我们可以谈谈你以后的位置。”',
+  actions:[
+    A('xu4','与许知远核对离职经过','前任也需要接受事实核查。',5,
+      '你问他，最初有没有参与那份临时方案。\n\n电话里沉默了很久。\n\n“参与了。”他说，“我以为真的会修。后来他们让我确认整个历史，我才知道这个签字意味着什么。”\n\n你没有替他洗清全部责任，也没有因此丢掉已有证据。',{},['confession']),
+    A('minutes4','向贺维索取书面回复','用正式询问补齐批准记录。',10,
+      '你没有问“是不是你干的”，而是列出三个明确的问题。\n\n贺维回复：他收到过临时口径说明，项目仍按原日期推进，修复细节由团队补充。\n\n他大概认为这是一份普通澄清。你保存了完整上下文。',{heat:10},['minutes']),
+    A('plan4','与陈默制定修复和延期方案','获得可执行的补救计划，并核对未修复状态。',15,
+      '你与陈默把问题拆成可验证的任务，列出数据回填、复测和重新验收的时间。\n\n任务板确认故障仍未关闭。周岚看完方案，第一次问：“延期多久，能控制在客户接受的范围内？”\n\n你拿出了一个具体日期。',{work:10,chen:10,zhou:5,flags:['plan']},['fix']),
+    A('coal4','分别征求同事是否愿意正式说明','说明引用范围，不替任何人承诺。',10,
+      '你告诉林晓和陈默，哪些记录会被引用，哪些问题会由他们本人解释。\n\n林晓说：“别写成我一个人决定的。”\n\n陈默说：“把未处理的风险写进去。”\n\n周岚没有答应站在你这边，但愿意先看完整材料。',{lin:10,chen:10,zhou:5}),
+    A('offer4','去贺维办公室听晋升提议','了解交易条件，暂不接受。',0,
+      '贺维推来一份职位说明。\n\n“运营负责人。待遇可以谈。验收材料保持原版，问题放到下一期修。”\n\n你问：“包括被排除的工单？”\n\n他笑了一下：“你已经知道怎么让事情顺利了。”\n\n你带走职位说明，没有当场承诺。',{flags:['offer']})
+  ]
+},
+{
+  title:'签字',goal:'完成最终准备，在考核与验收会上作出决定。',
+  intro:'周五，09:10。\n\n打印机旁放着两份文件：试用期考核表，项目验收确认单。\n\n周岚问你：“下午的会议，你准备怎么讲？”\n\n你还有三次行动。之后，所有人都会坐到同一张桌子前。',
+  actions:[
+    A('support5','逐一确认同事的发言意愿','最后一次兑现承诺，争取正式支持。',10,
+      '你把将要使用的段落发给当事人确认，没有擅自署他们的名字。\n\n林晓修改了一句口径描述。陈默补上复现条件。\n\n愿意支持你的人，会在会上亲口解释；仍有顾虑的人，也获得了拒绝的机会。',{lin:10,chen:10}),
+    A('fix5','核对最新修复状态','避免拿过时的信息进入会议。',10,
+      '陈默与你刷新任务板。故障仍未完成验证，验收数据也没有回填。\n\n你在记录上写下核对日期：本周五。\n\n这意味着会议上不能再用“已经修好”跳过问题。',{chen:10},['fix']),
+    A('minutes5','追问负责人书面确认','为缺失的批准记录保留最后一条获取途径。',10,
+      '你要求确认：负责人是否知晓临时口径，是否仍要求按期验收。\n\n贺维回复：“知晓。推进日期不变。”\n\n这不是全部责任的答案，但足以核实他接收过风险信息。',{heat:5},['minutes']),
+    A('work5','整理本周成果与交接清单','为考核准备可核实的工作成果。',15,
+      '你列出客户回应、文档修订、问题定位和下一步任务。\n\n没有把所有人的贡献写成自己的，也没有把自己的工作藏起来。\n\n至少考核这件事，你已经做了能做的准备。',{work:15,zhou:5}),
+    A('plan5','补完修复与延期方案','让提出问题之后还有可执行的下一步。',15,
+      '你补齐负责人与验证标准，并再次确认修复任务尚未关闭。\n\n方案承认延期成本，也说明继续按原报表验收的后果。\n\n它不能让所有人满意，但不再只是“这里有问题”。',{work:5,flags:['plan']},['fix'])
+  ]
+}
+];
+
+for(let i=0;i<chapters.length;i++){
+  if(i!==1) chapters[i].actions.push(
+    A('rest'+(i+1),'休息，暂时离开工作群','恢复 25 点精力，可重复。',0,
+      '你关掉消息提醒，喝了水，在窗边站了一会儿。\n\n楼下的人不知道这周发生了什么。你也不必每一分钟都知道。',{energy:25},[],true)
+  );
+  chapters[i].actions.push(
+    A('prepare'+(i+1),'整理日常工作与待办','改善工作表现，可重复。',10,
+      '你处理掉几项真实的待办，补全负责人和反馈时间。\n\n没有掌声。但明天的人可以少问一句：“这件事到底到哪一步了？”',{work:8},[],true)
+  );
+}
+
+const meetings=[
+{
+  title:'周一 · 10:00 · 客户会议',
+  text:'客户指着图表问：“百分之九十八，是所有工单的问题都解决了吗？”\n\n周岚看向你。你只能使用自己已经了解的信息。',
+  choices:[
+    A('m1a','说明口径仍需核对','先承认信息边界，并承诺补充。',0,
+      '你说：“这个数字采用了特定统计口径。我需要核对重新打开的工单，再补充完整情况。”\n\n客户要求给出反馈时间。周岚接过话：“历史口径我来说明。”\n\n你在会议纪要里写下待补事项。',{work:5,zhou:5},[],false,
+      s=>['lead','reply','snapshot'].some(x=>s.evidence.includes(x))),
+    A('m1b','按现有报表汇报','完成汇报，不额外保证数据完整。',0,
+      '你说明了图表的时间范围与现有结果，没有替尚未核实的历史作保证。\n\n汇报顺利结束。客户的问题被留到后续说明。\n\n你知道自己还需要弄清那个分母。',{work:10}),
+    A('m1c','当场说“这个数字可能是假的”','怀疑还没有形成完整证据。',0,
+      '会议室安静下来。\n\n客户问：“具体哪条记录不实？”\n\n你还无法完整回答。会后，林晓发来一句：“我说的是口径，你怎么直接这样讲？”\n\n周岚要求你以正式记录支持后续判断。',{work:-5,lin:-10,heat:15})
+  ]
+},
+{
+  title:'周二 · 17:20 · 异常复盘',
+  text:'贺维问：“能不能先把投诉归为个别操作问题？”\n\n客户的工单还没有真正解决。你需要决定今天留下什么结论。',
+  choices:[
+    A('m2a','提交复现事实和下一步','依据原始记录回应。',0,
+      '你提交编号、复现步骤和处理安排。\n\n陈默补充：“测试环境也能出现。”\n\n“个别操作问题”被从结论中删除。没有人因此立刻高兴，但记录开始准确。',{work:10,chen:5},[],false,
+      s=>s.evidence.includes('raw')||s.evidence.includes('logs')),
+    A('m2b','提出口径澄清，暂不判断全部责任','保留问题，继续核实。',0,
+      '你建议先对客户解释样本范围，并保留复查条目。\n\n周岚同意由团队补充说明。\n\n这还不是最终答案，至少没有把未知写成已经解决。',{work:5,zhou:5}),
+    A('m2c','在群里转述林晓的私人谈话','绕过核实与引用确认。',0,
+      '你把林晓的话发到项目群。\n\n她没有回复。稍后，她撤回了一个准备发给你的附件。\n\n贺维问：“这是个人判断，还是正式记录？”\n\n你发现信息被看见，与信息被相信，是两回事。',{work:-5,lin:-20,heat:15})
+  ]
+},
+{
+  title:'周三 · 17:00 · 纪要确认',
+  text:'周岚将纪要推向你。\n\n“现任项目运营已确认历史统计口径及数据完整性。”\n\n她说：“只是流程，签完还要走其他审批。”',
+  choices:[
+    A('m3a','修改责任范围，再确认当前工作','只确认自己核实的内容。',0,
+      '你把措辞改为：“现任运营确认本周已核实事项；历史口径与异常清单见附件。”\n\n周岚皱了皱眉，但接受了附件。\n\n林晓和陈默看到新版本后，都没有反对。',{work:5,lin:5,chen:5,heat:5,flags:['boundary']}),
+    A('m3b','签署原版确认单','换取流程推进，也留下历史确认。',0,
+      '你签下名字。\n\n周岚说：“辛苦，效率很好。”\n\n文件随后被归档。你的名字与那句“已确认历史数据完整性”一起留在系统里。',{work:10,zhou:10,flags:['signed']}),
+    A('m3c','拒绝签字，并当场追问谁在甩锅','维护边界，但缺少具体替代方案。',0,
+      '你说出了那个所有人都避开的词。\n\n周岚收回文件：“如果要讨论责任，请先把事实列清楚。”\n\n流程停了下来。你没有签字，但接下来的工作会更难获得配合。',{work:-5,zhou:-10,heat:15})
+  ]
+},
+{
+  title:'周四 · 17:30 · 会前协调',
+  text:'贺维要求明天材料“保持一致”。周岚则问：“如果不按原计划验收，你准备怎么收场？”\n\n你需要表明立场。',
+  choices:[
+    A('m4a','提交修复、回填与延期安排','让风险与补救一起进入正式材料。',0,
+      '你与工程核对未关闭的任务，提出回填、复测与重新验收安排。\n\n周岚问了几个成本问题，最后说：“把这版带到明天。”\n\n至少现在，延期有了一个能讨论的方案。',{work:10,zhou:10,flags:['plan']},['fix']),
+    A('m4b','说明自己将完成核实，再决定去留','保留独立判断。',0,
+      '你说：“我会把可以证明的事实交清楚，但不会替还没核实的历史作保证。”\n\n陈默点了点头。林晓低声说：“如果你走，记得把交接写完。”\n\n你开始认真考虑离职。',{lin:5,chen:5}),
+    A('m4c','接受贺维的职位交换','保持美化材料，换取更高职位。',0,
+      '贺维说：“材料保持原版，异常下一期处理，你来负责运营。”\n\n你点头，补签了他要求的历史确认附件。\n\n职位说明落进你的文件夹。你已经知道，晋升的条件是什么。',{work:10,flags:['offer','signed']})
+  ]
+}
+];
+
+const fresh=()=>({
+  version:1,phase:'intro',day:1,ap:3,energy:80,work:50,
+  trust:{lin:45,chen:40,zhou:45},heat:0,flags:[],evidence:[],
+  history:[],report:null,resume:null,ending:null
+});
+const clamp=n=>Math.max(0,Math.min(100,n));
+const has=(s,id)=>s.flags.includes(id);
+const chain=s=>
+  (s.evidence.includes('raw')||s.evidence.includes('logs'))&&
+  (s.evidence.includes('change')||s.evidence.includes('snapshot'))&&
+  (s.evidence.includes('approval')||s.evidence.includes('minutes'))&&
+  s.evidence.includes('fix');
+const allies=s=>Object.values(s.trust).filter(n=>n>=60).length;
+
+function apply(s,e={},ev=[]){
+  for(const k of ['work','heat'])s[k]=clamp(s[k]+(e[k]||0));
+  for(const k of ['lin','chen','zhou'])s.trust[k]=clamp(s.trust[k]+(e[k]||0));
+  if(e.energy)s.energy=clamp(s.energy+e.energy);
+  for(const f of e.flags||[])if(!has(s,f))s.flags.push(f);
+  for(const f of ev)if(!s.evidence.includes(f))s.evidence.push(f);
+}
+function note(s,title,text,resume){
+  s.history.push({day:s.day,title,text});
+  s.report={title,text};s.resume=resume;s.phase='report';
+}
+function act(s,a){
+  if(s.phase!=='explore'||s.ap<=0||s.energy<a.cost||
+    (!a.repeat&&has(s,a.id))||(a.need&&!a.need(s)))return false;
+  s.ap--;s.energy=clamp(s.energy-a.cost);apply(s,a.effect,a.ev);
+  if(!a.repeat)s.flags.push(a.id);
+  const next=s.day===1&&!has(s,'meeting1')?'meeting':
+    s.ap===0?(s.day===1?'night':s.day===5?'decision':'meeting'):'explore';
+  note(s,a.label,a.text,next);
+  return true;
+}
+function meet(s,m){
+  if(s.phase!=='meeting'||(m.need&&!m.need(s)))return false;
+  apply(s,m.effect,m.ev);s.flags.push('meeting'+s.day);
+  note(s,m.label,m.text,s.day===1&&s.ap>0?'explore':'night');
+  return true;
+}
+function advance(s){
+  if(s.phase==='intro'){s.phase='explore';return true}
+  if(s.phase==='report'){s.phase=s.resume;s.resume=null;return true}
+  if(s.phase==='night'&&s.day<5){
+    s.day++;s.ap=3;s.energy=clamp(s.energy+15);s.phase='explore';return true
+  }
+  return false;
+}
+function finish(s,id){
+  if(s.phase!=='decision')return false;
+  if(id==='reform'&&!(chain(s)&&allies(s)>=2&&has(s,'plan')))return false;
+  if(id==='leave'&&!chain(s))return false;
+  if(id==='promote'&&!(has(s,'offer')&&has(s,'signed')&&s.work>=65))return false;
+  s.ending=id==='stay'?
+    (s.work>=60&&!has(s,'signed')?'stay':'failure'):id;
+  s.phase='ending';
+  s.history.push({day:5,title:'最终决定',text:s.ending});
+  return true;
+}
+
+const allowedFlags=new Set(
+  chapters.flatMap(c=>c.actions.map(a=>a.id)).concat(
+    ['plan','signed','offer','boundary','meeting1','meeting2','meeting3','meeting4']
+  )
+);
+const allowedEvidence=new Set(Object.keys(EVIDENCE));
+
+function valid(s,af=allowedFlags,ae=allowedEvidence){
+  const phases=['intro','explore','meeting','night','decision','report','ending'];
+  const endings=['stay','reform','leave','promote','failure'];
+  const num=(n,a,b)=>Number.isInteger(n)&&n>=a&&n<=b;
+  const str=(t,n)=>typeof t==='string'&&t.length<=n;
+  const list=(a,allowed)=>Array.isArray(a)&&a.length<=100&&
+    new Set(a).size===a.length&&a.every(x=>typeof x==='string'&&allowed.has(x));
+  if(!s||typeof s!=='object'||s.version!==1||!phases.includes(s.phase)||
+    !num(s.day,1,5)||!num(s.ap,0,3)||!num(s.energy,0,100)||
+    !num(s.work,0,100)||!num(s.heat,0,100))return false;
+  if(!s.trust||!['lin','chen','zhou'].every(k=>num(s.trust[k],0,100)))return false;
+  if(!list(s.flags,af)||!list(s.evidence,ae))return false;
+  if(!Array.isArray(s.history)||s.history.length>100||
+    !s.history.every(x=>x&&num(x.day,1,5)&&str(x.title,120)&&str(x.text,5000)))return false;
+  if(s.phase==='report'){
+    if(!s.report||!str(s.report.title,120)||!str(s.report.text,5000)||
+      !['explore','meeting','night','decision'].includes(s.resume))return false;
+  }else if(s.resume!==null)return false;
+  if(s.phase==='ending'){
+    if(!endings.includes(s.ending))return false;
+  }else if(s.ending!==null)return false;
+  const p=s.phase==='report'?s.resume:s.phase;
+  if(p==='intro'&&(s.day!==1||s.ap!==3||s.flags.length||
+    s.history.length||s.evidence.length))return false;
+  if(p==='explore'&&s.ap<=0)return false;
+  if(p==='meeting'&&(s.day===5||
+    (s.day===1?(s.ap>2||has(s,'meeting1')):s.ap!==0)))return false;
+  if(p==='night'&&(s.day===5||s.ap!==0||!has(s,'meeting'+s.day)))return false;
+  if((p==='decision'||p==='ending')&&(s.day!==5||s.ap!==0))return false;
+  for(let d=1;d<s.day;d++)if(!has(s,'meeting'+d))return false;
+  return true;
+}
+
+let state=fresh();
+let storageOK=true;
+let loadMessage='';
+try{
+  const raw=localStorage.getItem(SAVE_KEY);
+  if(raw){
+    const saved=JSON.parse(raw);
+    if(valid(saved))state=saved;
+    else loadMessage='原存档格式无效。可导入备份，或开始新的一周。';
+  }
+}catch(e){
+  storageOK=false;
+  loadMessage='本地存档暂不可用，请使用“导出存档”保留进度。';
+}
+
+const $=id=>document.getElementById(id);
+const node=(tag,cls,text)=>{
+  const e=document.createElement(tag);
+  if(cls)e.className=cls;
+  if(text!==undefined)e.textContent=text;
+  return e;
+};
+let toastTimer;
+function toast(text){
+  $('toast').textContent=text;$('toast').style.display='block';
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>{$('toast').style.display='none'},4000);
+}
+function save(){
+  try{
+    localStorage.setItem(SAVE_KEY,JSON.stringify(state));
+    storageOK=true;
+  }catch(e){
+    storageOK=false;
+    toast('自动存档不可用，请导出存档保留进度。');
+  }
+}
+function commit(fn){
+  if(fn()===false)return;
+  save();render();
+  if(window.matchMedia('(max-width:760px)').matches){
+    document.querySelector('.paper').scrollIntoView({block:'start',behavior:'auto'});
+  }
+}
+let keyActions=[];
+function choice(box,label,hint,fn,disabled=false,primary=false){
+  const i=keyActions.length;
+  const b=node('button','choice'+(primary?' primary':''));
+  b.type='button';b.disabled=disabled;
+  const key=String.fromCharCode(65+i);
+  b.append(node('span','key',key));
+  const copy=node('span');
+  copy.append(node('strong','',label));
+  if(hint)copy.append(node('small','',hint));
+  b.append(copy);
+  b.addEventListener('click',fn);
+  box.append(b);
+  keyActions.push({key,button:b});
+  return b;
+}
+function prose(parent,text){
+  const box=node('div','prose');
+  for(const p of text.split('\n\n')){
+    box.append(node('p',p.startsWith('“')?'quote':'',p));
+  }
+  parent.append(box);
+}
+function title(text,kicker){
+  if(kicker)$('stage').append(node('p','chapter',kicker));
+  $('stage').append(node('h2','',text));
+}
+function choicesBox(){
+  const b=node('div','choices');$('stage').append(b);return b;
+}
+function conditions(){
+  return [
+    [state.evidence.includes('raw')||state.evidence.includes('logs'),'问题存在'],
+    [state.evidence.includes('change')||state.evidence.includes('snapshot'),'人为修改'],
+    [state.evidence.includes('approval')||state.evidence.includes('minutes'),'批准记录'],
+    [state.evidence.includes('fix'),'风险尚未解除']
+  ];
+}
+function render(){
+  keyActions=[];
+  $('stage').replaceChildren();
+  const c=chapters[state.day-1];
+  $('day-label').textContent=DAYS[state.day-1]+' · '+c.title;
+  $('objective').textContent=c.goal;
+  $('energy-value').textContent=state.energy+' / 100';
+  $('work-value').textContent=state.work+' / 100';
+  $('energy-bar').style.width=state.energy+'%';
+  $('work-bar').style.width=state.work+'%';
+  $('timeline').replaceChildren();
+  DAYS.forEach((d,i)=>{
+    const dot=node('span','dot'+(i+1===state.day?' active':i+1<state.day?' done':''),d.slice(1));
+    dot.setAttribute('aria-label',d+(i+1===state.day?'，当前日期':''));
+    $('timeline').append(dot);
+  });
+  $('side-note').replaceChildren(
+    node('b','',state.phase==='ending'?'本周已结束':'剩余自由行动：'+state.ap+' / 3'),
+    node('div','', '已记录线索：'+state.evidence.length+' 项'),
+    node('div','',state.heat>=35?'最近有人开始询问你在查哪些文件。':'每天夜间恢复 15 点精力。')
+  );
+  $('save-label').textContent=storageOK?'进度在本机保存':'请导出存档';
+  $('scene-label').textContent=state.phase==='ending'?'本周结案档案':
+    '灯塔项目 / 第 '+state.day+' 个工作日';
+
+  if(state.phase==='intro'){
+    title('欢迎入职。','序章 / 临时工牌');
+    prose($('stage'),
+      '你是衡川科技新入职的项目运营。\n\n你接手的“灯塔”系统将在周五验收。同一天，直属领导将完成你的首次试用期考核。\n\n前任许知远已经离职。他留下了一个抽屉、一份没有完成的交接文档，以及一些不太像正常交接的提醒。\n\n你的任务：把工作做好，弄清事实，然后决定自己的名字应该出现在哪份文件上。'
+    );
+    $('stage').append(node('div','requirement',
+      '五个工作日 · 四条主要结局\n每天 3 次自由行动；调查、工作与休息需要取舍。\n没有随机判定。证据、工作表现与承诺共同影响结果。'));
+    choice(choicesBox(),'领取工牌，开始周一','预计 20～30 分钟；自动存档。',()=>commit(()=>advance(state)),false,true);
+    $('stage').append(node('p','note','电脑可按选项字母选择。打开笔记不会消耗行动。'));
+  }
+
+  if(state.phase==='explore'){
+    const first=state.day===1&&!has(state,'meeting1');
+    title(first?'三条消息，一次选择。':'现在，你要先做什么？',
+      DAYS[state.day-1]+' / '+c.title);
+    prose($('stage'),state.day===1&&has(state,'meeting1')?c.later:c.intro);
+    const box=choicesBox();
+    c.actions.forEach(a=>{
+      const used=!a.repeat&&has(state,a.id);
+      const unavailable=a.need&&!a.need(state);
+      const tired=state.energy<a.cost;
+      let hint=a.hint+' 消耗 1 次行动'+(a.cost?'、'+a.cost+' 点精力':'')+'。';
+      if(used)hint='已完成这项行动。';
+      else if(unavailable)hint='当前权限已收紧，可寻找其他正式记录。';
+      else if(tired)hint='精力不足。可以先休息，或选择其他行动。';
+      choice(box,a.label,hint,()=>commit(()=>act(state,a)),used||unavailable||tired);
+    });
+    $('stage').append(node('p','note',
+      first?'第一次行动后，自动进入十点客户会。':
+      '完成今天的自由行动后，进入关键事件。休息也会占用一次行动。'));
+  }
+
+  if(state.phase==='meeting'){
+    const m=meetings[state.day-1];
+    title(m.title,'必要事件 / 不消耗自由行动');
+    prose($('stage'),m.text);
+    const box=choicesBox();
+    m.choices.forEach(a=>{
+      const blocked=a.need&&!a.need(state);
+      choice(box,a.label,blocked?'尚未取得支持这项回应的线索。':a.hint,
+        ()=>commit(()=>meet(state,a)),blocked);
+    });
+  }
+
+  if(state.phase==='report'){
+    title(state.report.title,'选择已发生 / 后果记录');
+    prose($('stage'),state.report.text);
+    const lastAction=chapters[state.day-1].actions.find(a=>a.label===state.report.title)||
+      meetings[state.day-1]?.choices.find(a=>a.label===state.report.title);
+    if(lastAction?.ev.length){
+      $('stage').append(node('div','evidence-alert',
+        '笔记已更新：'+lastAction.ev.map(k=>EVIDENCE[k].title).join('、')+'。可在“证据笔记”中查阅。'));
+    }
+    const nextNames={
+      explore:'继续今天的行动',meeting:'进入会议',
+      night:'结束今天的工作',decision:'进入周五最终会议'
+    };
+    choice(choicesBox(),nextNames[state.resume],'这段记录已保存。',()=>commit(()=>advance(state)),false,true);
+  }
+
+  if(state.phase==='night'){
+    title('今天，到这里。',DAYS[state.day-1]+' / 下班之后');
+    const texts=[
+      '你把临时工牌放在桌上。\n\n第一天没有教会你这家公司的全部规则。至少你已经知道，交接不是把文件拖进一个文件夹。',
+      '客户的问题还没有真正解决。\n\n你看了一遍今天的记录。把问题说清楚，比把问题说小一点更费力。',
+      has(state,'signed')?
+        '签字后的确认单已经归档。\n\n你盯着自己的名字。以后有人问起这段历史，这份文件会替你先回答。':
+        '你没有替未经核实的历史作保证。\n\n这让流程慢了一点，也让你的名字暂时留在了正确的位置。',
+      '明天，考核和验收会同时发生。\n\n你把证据和待办整理好。职场里最难的选择，有时不是该说什么，而是愿意为哪句话承担后果。'
+    ];
+    prose($('stage'),texts[state.day-1]);
+    $('stage').append(node('div','requirement',
+      '工作表现：'+state.work+' / 100\n已记录线索：'+state.evidence.length+
+      ' 项\n睡眠将恢复 15 点精力，明天重新获得 3 次自由行动。'));
+    choice(choicesBox(),'进入'+DAYS[state.day],'带着今天的选择继续。',()=>commit(()=>advance(state)),false,true);
+  }
+
+  if(state.phase==='decision'){
+    title('你的名字，签在哪里？','周五 / 15:00 / 最终会议');
+    prose($('stage'),
+      '会议室里坐着客户、周岚、林晓、陈默和贺维。\n\n桌上是试用期考核表与项目验收确认单。\n\n客户问：“所以，我们今天能确认什么？”\n\n这一次，所有人都等着你回答。'
+    );
+    const req=node('div','requirement');
+    conditions().forEach(([ok,t])=>req.append(node('div','',(ok?'✓ ':'○ ')+t)));
+    req.append(node('div','',(has(state,'plan')?'✓ ':'○ ')+'已有补救方案'));
+    req.append(node('div','',(allies(state)>=2?'✓ ':'○ ')+'至少两人愿意正式支持'));
+    $('stage').append(req);
+    const box=choicesBox();
+    const reformOK=chain(state)&&allies(state)>=2&&has(state,'plan');
+    const promoteOK=has(state,'offer')&&has(state,'signed')&&state.work>=65;
+    choice(box,'留下工作，确认自己能证明的部分',
+      '工作表现达标且未作不实历史确认，可获得转正；否则进入失败尾声。',
+      ()=>commit(()=>finish(state,'stay')));
+    choice(box,'提交完整材料，与同事推动正式整改',
+      reformOK?'证据、支持与方案已具备。':'需要完整证据链、补救方案和至少两名支持者。',
+      ()=>commit(()=>finish(state,'reform')),!reformOK);
+    choice(box,'交清事实，拒绝历史责任后离职',
+      chain(state)?'完整证据链已具备。':'需要完整证据链。',
+      ()=>commit(()=>finish(state,'leave')),!chain(state));
+    choice(box,'接受新职位，按美化材料继续验收',
+      promoteOK?'交易条件已具备。':'需要晋升提议、已签署的历史确认，且工作表现至少 65。',
+      ()=>commit(()=>finish(state,'promote')),!promoteOK);
+  }
+
+  if(state.phase==='ending')renderEnding();
+}
+
+function renderEnding(){
+  const ending=state.ending;
+  const data={
+    stay:{
+      title:'工牌还在',
+      text:'你通过了考核。\n\n最终材料明确了你本周核实的范围，历史问题被列入后续处理。你没有主动推动全面调查，也没有替未知的过去签字。\n\n周一早上，你再次刷开办公室的门。工牌不再是临时的。\n\n林晓抬头问：“新来的运营，坐你旁边？”\n\n你看了一眼那个抽屉，说：“我先给他做交接。”'
+    },
+    reform:{
+      title:'会议纪要已更新',
+      text:'你依次展示原始问题、口径修改、批准记录和未完成修复任务。\n\n同事没有替你喊口号，而是各自确认了自己能证明的事实。\n\n客户同意延期复测，要求重新回填数据。项目进入正式调查，临时统计方式和批准责任都被记录。\n\n'+(state.work>=60?
+        '你的考核通过了。周岚在评价里写：“能将风险转化为可执行事项。”':
+        '项目开始整改，但你的考核没有通过。改变发生了，代价也仍然存在。')+
+      '\n\n散会后，陈默发来新版任务板：“这次真的有人负责。”'
+    },
+    leave:{
+      title:'最后一次打卡',
+      text:'你提交完整记录，拒绝承担不属于自己的历史责任，并交清尚未完成的工作。\n\n公司没有在那一刻突然变好。调查被登记，后续结果需要时间。\n\n你把工牌放在前台。'+(has(state,'signed')?
+        '你同时提交了此前签字文件的更正说明；那次签字没有被你从历史里删掉。':
+        '你的名字，没有落在那份历史保证上。')+
+      '\n\n'+(allies(state)>=2?'林晓和陈默送你到电梯口。':'电梯门关上前，你看见有人从工位抬起头。')+
+      '\n\n门开了。外面不是一个保证更好的世界，但你终于可以自己决定下一站。'
+    },
+    promote:{
+      title:'你的新办公室',
+      text:'职位调整邮件在周一上午发出。你成为了运营负责人。\n\n验收材料没有加入那批异常工单。历史确认附件上留着你的名字。\n\n两周后，新人问你：“这项口径，好像有点问题？”\n\n你看着日程表上即将开始的客户会，把一份确认单推了过去。\n\n“只是流程。”你听见自己说，“签完还要走其他审批。”\n\n新人低头，准备签字。'
+    },
+    failure:{
+      title:has(state,'signed')?'名字留在了附件里':'试用期结束',
+      text:has(state,'signed')?
+        '你选择留下，但此前签署的历史确认成为了责任分配的依据。\n\n当客户要求解释异常时，那份附件被投到会议室屏幕上。你的名字清晰得没有办法忽略。\n\n工作做得再多，也不能自动取消已经作出的承诺。\n\n你需要在接下来的调查中解释自己的确认范围。这个星期，没有给你一个轻松的结尾。':
+        '你没有签下不实的历史保证，但本周工作表现未达到考核要求。\n\n你收拾工位，交出临时工牌。尚未查清的问题，没有因为离职自动获得答案。\n\n走出大楼时，你记下了一件事：下一次，不只要知道该拒绝什么，也要准备好自己能完成什么。'
+    }
+  };
+  const e=data[ending];
+  $('stage').append(node('span','end-label',ending==='failure'?'路线失败尾声':'本周结局'));
+  title(e.title,'结案 / 第五个工作日');
+  prose($('stage'),e.text);
+  $('stage').append(node('div','requirement',
+    '本周记录\n工作表现：'+state.work+' / 100\n证据链：'+
+    (chain(state)?'完整':'未完整')+'\n正式支持者：'+allies(state)+' 人\n历史确认：'+
+    (has(state,'signed')?'已签署':'未签署不实历史保证')));
+  const box=choicesBox();
+  choice(box,'回看证据与行动记录','查看这一结局如何形成。',()=>openNotebook('history'));
+  choice(box,'导出这一周的存档','保留这条路线。',exportSave);
+  choice(box,'重新开始，尝试另一条路线','打开重新开始确认。',()=>$('confirm-dialog').showModal(),false,true);
+}
+
+let activeTab='evidence';
+function openNotebook(tab='evidence'){
+  activeTab=tab;renderNotebook();
+  if(!$('notebook').open)$('notebook').showModal();
+}
+function entry(parent,title,text,small=''){
+  const e=node('div','entry');
+  e.append(node('strong','',title));
+  if(small)e.append(node('small','',small));
+  e.append(node('p','',text));parent.append(e);
+}
+function renderNotebook(){
+  document.querySelectorAll('[data-tab]').forEach(b=>{
+    b.classList.toggle('on',b.dataset.tab===activeTab);
+    b.setAttribute('aria-pressed',b.dataset.tab===activeTab?'true':'false');
+  });
+  const box=$('notebook-content');box.replaceChildren();
+  if(activeTab==='evidence'){
+    entry(box,'证据链核对',
+      conditions().map(([ok,t])=>(ok?'✓ ':'○ ')+t).join('\n')+
+      '\n完整证据链需要四项全部核实。提醒和人物证词可以引导调查，不能独立证明全部责任。');
+    if(!state.evidence.length)entry(box,'目前没有线索','从工作、对话和正式文件中寻找记录。');
+    state.evidence.forEach(k=>{
+      const e=EVIDENCE[k];entry(box,e.title,e.text,e.type);
+    });
+  }
+  if(activeTab==='people'){
+    const people=[
+      ['lin','林晓 · 数据分析师','她希望有人准确解释口径，而不是把她的私人话语变成唯一责任证据。'],
+      ['chen','陈默 · 资深工程师','他更愿意回应复现步骤、风险记录和可执行的修复工作。'],
+      ['zhou','周岚 · 直属领导','她在意交付与团队处境；提出具体补救比只提出指控更容易获得配合。']
+    ];
+    people.forEach(([id,name,text])=>{
+      const n=state.trust[id];
+      const attitude=n>=60?'愿意在正式场合确认事实':
+        n>=40?'仍在观察，愿意有限配合':'明显谨慎，尚不愿正式支持';
+      entry(box,name,text,'当前反馈：'+attitude);
+    });
+    entry(box,'许知远 · 前任','他的提醒需要核实。他也有自己的责任与顾虑。');
+    entry(box,'贺维 · 业务负责人','他希望验收按期完成。职位提议附带材料要求。');
+    if(has(state,'signed'))entry(box,'需要记住的承诺','你已经签署历史确认。之后的工作表现不会自动抹去这项记录。');
+    if(has(state,'plan'))entry(box,'已经准备的事项','你有一份可执行的修复与延期方案。');
+  }
+  if(activeTab==='history'){
+    if(!state.history.length)entry(box,'一周尚未开始','第一项行动发生后，这里会记录你的选择。');
+    [...state.history].reverse().forEach(h=>{
+      const text=h.title==='最终决定'?'本周已作出最终决定。':h.text;
+      entry(box,DAYS[h.day-1]+' · '+h.title,text);
+    });
+  }
+  if(activeTab==='rules'){
+    entry(box,'行动与精力','每天 3 次自由行动。工作、调查、对话和休息都会占用行动。会议不占用自由行动。休息恢复 25 点精力，每夜恢复 15 点。');
+    entry(box,'选择与证据','没有随机判定。准备工作会开放会议选项，正式记录能补齐证据链。每项一次性调查只能完成一次，休息和日常工作可以重复。');
+    entry(box,'人物关系','信任通过对话反馈体现。至少两名同事愿意正式支持，加上完整证据与补救方案，才能推动集体整改。');
+    entry(box,'存档','每次选择后自动保存到当前浏览器。清理浏览器数据会移除存档。换浏览器或设备时，先导出，再导入 JSON 文件。');
+    entry(box,'操作','点击选项，或在电脑上按 A、B、C 等字母。打开笔记不会消耗行动。重新开始前可以导出当前路线。');
+  }
+}
+
+function exportSave(){
+  const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download='周一请活下来-'+DAYS[state.day-1]+'-存档.json';
+  document.body.append(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+  toast('存档已导出。');
+}
+
+$('open-notebook').addEventListener('click',()=>openNotebook());
+$('close-notebook').addEventListener('click',()=>$('notebook').close());
+document.querySelectorAll('[data-tab]').forEach(b=>{
+  b.addEventListener('click',()=>{
+    activeTab=b.dataset.tab;renderNotebook();
+  });
+});
+$('export-save').addEventListener('click',exportSave);
+$('import-save').addEventListener('click',()=>$('file-input').click());
+$('file-input').addEventListener('change',async e=>{
+  const file=e.target.files[0];
+  if(!file)return;
+  try{
+    if(file.size>300000)throw Error('too large');
+    const imported=JSON.parse(await file.text());
+    if(!valid(imported))throw Error('invalid');
+    state=imported;save();render();toast('存档已恢复。');
+  }catch(err){
+    toast('无法导入：文件格式、版本或游戏状态无效。当前进度已保留。');
+  }finally{e.target.value=''}
+});
+$('restart').addEventListener('click',()=>$('confirm-dialog').showModal());
+$('cancel-restart').addEventListener('click',()=>$('confirm-dialog').close());
+$('confirm-restart').addEventListener('click',()=>{
+  $('confirm-dialog').close();state=fresh();save();render();
+  toast('新的一周开始了。');
+});
+document.addEventListener('keydown',e=>{
+  if(e.ctrlKey||e.altKey||e.metaKey||e.repeat||
+    $('notebook').open||$('confirm-dialog').open||
+    ['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName))return;
+  const action=keyActions.find(a=>a.key===e.key.toUpperCase());
+  if(action&&!action.button.disabled){
+    e.preventDefault();action.button.click();
+  }
+});
+render();
+if(loadMessage)toast(loadMessage);
+</script>
+</body>
+</html>
